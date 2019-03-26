@@ -1,0 +1,85 @@
+server:
+  port: 8080
+  address: 127.0.0.1
+  servlet:
+    context-path: /
+    session:
+      timeout: #
+  tomcat:
+    uri-encoding: utf-8
+  connection-timeout: 5000s
+# mysql 的数据库配置
+spring:
+  datasource:
+    name: druidDataSource
+    url: jdbc:mysql://localhost:3305/springdb?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat,wall,config
+      max-active: 100
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+#      filters: stat,wall,log4j,config
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+              url-pattern: "/druid/*"
+              # IP白名单(没有配置或者为空，则允许所有访问)
+              allow: 127.0.0.1,192.168.163.1
+              # IP黑名单 (存在共同时，deny优先于allow)
+              deny: 192.168.1.73
+              #  禁用HTML页面上的“Reset All”功能
+              reset-enable: false
+              # 登录名
+              login-username: admin
+              # 登录密码
+              login-password: 123456
+    #模板引擎
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    servlet:
+      content-type: text/html
+  jpa:
+    database: MYSQL
+    show-sql: true
+  profiles:
+    active: dev
+
+#Redis:
+  redis:
+    port: 6379
+    host: localhost
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    database: 0
+mybatis:
+    mapper-locations: classpath:/mybatis/*Mapper.xml
+    type-aliases-package: com.jm.technic.damain
+    #配置项：开启下划线到驼峰的自动转换. 作用：将数据库字段根据驼峰规则自动注入到对象属性。
+    configuration:
+      map-underscore-to-camel-case: true
+#logging:
+#  config: src/main/resources/log4j-spring.properties
+
+
